@@ -16,12 +16,8 @@ export default [
         component: './graph/knowledge',
       },
       {
-        path: './classGraph',
-        component: './graph/classGraph',
-      },
-      {
         path: './kgPage',
-        component: './kgPage/index',
+        component: './newKg/index',
       },
       {
         path: './collection',

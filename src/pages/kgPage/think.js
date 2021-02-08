@@ -1,5 +1,5 @@
 import React from 'react'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import _ from 'lodash'
 import resizeListener, { unbind } from 'element-resize-event'
 import subList from '@/constants/subject'
@@ -114,7 +114,6 @@ export default class GraphChart extends React.Component {
   }
 
   renderChart = (dom, graph, instance, forceUpdate = false) => {
-    const that = this
     let options
     if (!graph) {
       options = {
@@ -227,7 +226,7 @@ export default class GraphChart extends React.Component {
 
   render() {
     return (
-      <div className="e-charts-graph" ref={t => this.dom = t} style={{ height: '100%', width: '100%' }} />
+      <div className="e-charts-graph" ref={(t) => this.dom = t} style={{ height: '100%', width: '100%' }} />
     )
   }
 }

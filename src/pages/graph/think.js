@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 import React from 'react'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import _ from 'lodash'
 import resizeListener, { unbind } from 'element-resize-event'
 import subList from '@/constants/subject'

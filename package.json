@@ -17,7 +17,7 @@
     "cookie-parser": "^1.4.4",
     "dom-to-image": "^2.6.0",
     "dva": "^2.6.0-beta.6",
-    "echarts": "^4.2.1",
+    "echarts": "^5.0.2",
     "ejs": "^2.6.2",
     "element-resize-event": "^3.0.3",
     "eslint-config-airbnb": "^18.2.1",

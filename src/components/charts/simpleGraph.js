@@ -1,5 +1,5 @@
 import React from 'react'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import _ from 'lodash'
 import resizeListener, { unbind } from 'element-resize-event'
 // import color from '@/constants/colorList'
@@ -236,11 +236,8 @@ export default class GraphChart extends React.Component {
     myChart.clear()
     myChart.resize()
     myChart.setOption(options)
-    if (myChart._$handlers.click) { // eslint-disable-line
-      myChart._$handlers.click.length = 0 // eslint-disable-line
-    } if (myChart._$handlers.dblclick) { // eslint-disable-line
-      myChart._$handlers.dblclick.length = 0 // eslint-disable-line
-    }
+    myChart.off('click')
+    myChart.off('dblclick')
     myChart.on('click', (params) => {
       that.jumpToGraph(params)
     })
@@ -253,6 +250,6 @@ export default class GraphChart extends React.Component {
   }
 
   render() {
-    return <div className="e-charts-graph" ref={t => this.dom = t} style={{ height: '100%' }} />
+    return <div className="e-charts-graph" ref={(t) => this.dom = t} style={{ height: '100%' }} />
   }
 }
