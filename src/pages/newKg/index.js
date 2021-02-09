@@ -174,6 +174,27 @@ class FirstGraph extends React.Component {
     } = this.state
     const { locale } = this.props
 
+    const extra = (
+      <div style={{ paddingLeft: 10 }}>
+        <span>选择学科：</span>
+        <Select
+          style={{ marginRight: 20, width: 120 }} value={subject}
+          onChange={(value) => this.handleThinkData(rawData, value, gradeLevel)}
+        >
+          {makeOption(subjectList)}
+        </Select>
+        <span>选择学段：</span>
+        <Select
+          style={{ marginRight: 20, width: 120 }} value={gradeLevel}
+          onChange={(value) => this.handleThinkData(rawData, subject, value)}
+        >
+          <Option value="小学" key="小学">小学</Option>
+          <Option value="初中" key="初中">初中</Option>
+          <Option value="高中" key="高中">高中</Option>
+        </Select>
+      </div>
+    )
+
     return (
       <div style={{ padding: '20px 10px', minWidth: 1300 }}>
         <Script
@@ -182,27 +203,14 @@ class FirstGraph extends React.Component {
           onError={() => this.onhandleScript('error')}
           onLoad={() => this.onhandleScript('load')}
         />
-        <div style={{ paddingLeft: 10 }}>
-          <Select
-            style={{ marginRight: 20, width: 160 }} value={subject}
-            onChange={(value) => this.handleThinkData(rawData, value, gradeLevel)}
-          >
-            {makeOption(subjectList)}
-          </Select>
-          <Select
-            style={{ marginRight: 20, width: 240 }} value={gradeLevel}
-            onChange={(value) => this.handleThinkData(rawData, subject, value)}
-          >
-            <Option value="小学" key="小学">小学</Option>
-            <Option value="初中" key="初中">初中</Option>
-            <Option value="高中" key="高中">高中</Option>
-          </Select>
-        </div>
         <div style={{ minHeight: 700 }}>
           <Card
-            style={{ margin: 10, minHeight: 700 }}
-            title={locale === 'cn' ? '关系图谱' : 'Relation Graph'}
+            style={{ margin: '0 10px', minHeight: 700 }}
+            title={(
+              <span style={{ color: '#fff' }}>{locale === 'cn' ? '思维导图全图' : 'Relation Graph'}</span>
+            )}
             className={Styles.myCard}
+            extra={extra}
           >
             <Spin spinning={loadingChart}>
               <div style={{ height: 660 }}>

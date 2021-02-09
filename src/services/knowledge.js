@@ -63,3 +63,11 @@ export function infoByCmccUrl(body, rSymbol) {
     rSymbol,
   })
 }
+
+export function searchByKnowIdV3(body, rSymbol) {
+  return request.get({
+    url: '/knowledgeWiki/api/knowledgeUri/wiki/searchByKnowIdV3',
+    data: body,
+    rSymbol,
+  })
+}

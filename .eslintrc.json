@@ -38,6 +38,7 @@
     "react/destructuring-assignment": [0],
     "global-require": [0],
     "object-curly-newline": [0],
+    "no-param-reassign": [0],
     "jsx-a11y/control-has-associated-label": [0]
   },
   "parserOptions": {

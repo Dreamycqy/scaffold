@@ -1,7 +1,9 @@
 import React from 'react'
+import { Spin } from 'antd'
 import * as echarts from 'echarts'
 import _ from 'lodash'
 import resizeListener, { unbind } from 'element-resize-event'
+import { searchByKnowIdV3 } from '@/services/knowledge'
 
 export default class GraphChart extends React.Component {
   constructor(props) {
@@ -9,36 +11,28 @@ export default class GraphChart extends React.Component {
     this.dom = null
     this.instance = null
     this.state = {
+      loading: false,
     }
   }
 
-  componentDidMount() {
-    const { graph, forcename } = this.props
+  async componentDidMount() {
+    const { select } = this.props
+    const { graph } = await this.getData(this.props)
     try {
-      this.instance = this.renderChart(this.dom, graph, forcename, this.instance)
+      this.instance = this.renderChart(this.dom, graph, select, this.instance)
       resizeListener(this.dom, () => {
-        this.instance = this.renderChart(this.dom, graph, forcename, this.instance, true)
+        this.instance = this.renderChart(this.dom, graph, select, this.instance, true)
       })
     } catch (e) {
       console.log(e); // eslint-disable-line
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const {
-      graph, forcename, resize,
-    } = nextProps
-    if (!_.isEqual(nextState, this.nextState)) {
-      return true
+  UNSAFE_componentWillReceiveProps = async (nextProps) => {
+    if (!_.isEqual(nextProps, this.props)) {
+      const { graph } = await this.getData(nextProps)
+      this.instance = this.renderChart(this.dom, graph, nextProps.select, this.instance)
     }
-    return !_.isEqual(graph, this.props.graph)
-      || forcename !== this.props.forcename
-      || !_.isEqual(resize, this.props.resize)
-  }
-
-  componentDidUpdate() {
-    const { graph, forcename } = this.props
-    this.instance = this.renderChart(this.dom, graph, forcename, this.instance)
   }
 
   componentWillUnmount() {
@@ -46,18 +40,42 @@ export default class GraphChart extends React.Component {
     this.instance && this.instance.dispose()  //  eslint-disable-line
   }
 
+  getData = async (props) => {
+    this.setState({ loading: true })
+    const { select, selectId } = props
+    const nodes = [{
+      name: select,
+      category: '0',
+    }]
+    const links = []
+    const data = await searchByKnowIdV3({
+      knowId: selectId,
+    })
+    if (data.data) {
+      data.data.forEach((e) => {
+        const newName = e.entity_name === select ? `${e.entity_name} (知识点)` : e.entity_name
+        nodes.push({
+          name: newName,
+          category: newName,
+        })
+        links.push({
+          source: newName,
+          target: select,
+        })
+      })
+    }
+    this.setState({ loading: false })
+    return { graph: { nodes, links } }
+  }
+
   jumpToGraph = (param) => {
     const { data } = param
-    const { category, uri, name } = data
+    const { subject } = this.props
+    const { category, name } = data
     if (category === '0') {
       return
     }
-    if (category !== '1') {
-      this.props.handleExpandGraph({
-        uri,
-        name,
-      })
-    }
+    window.open(`/knowledgeWiki/knowledge?name=${name}&subject=${subject}`)
   }
 
   renderChart = (dom, graph, forcename, instance, forceUpdate = false) => {
@@ -76,49 +94,13 @@ export default class GraphChart extends React.Component {
       const { nodes } = graph
       const categories = []
       nodes.forEach((e) => {
-        if (e.colle && !_.find(categories, { name: e.colle })) {
+        if (!e.categories) {
           categories.push({
-            name: e.colle,
+            name: e.name,
           })
         }
       })
-      graph.links.forEach((e) => {
-        const countList = graph.links.filter((j) => {
-          return j.source === e.source
-        })
-        const count = countList.length
-        const number = _.findIndex(countList, { source: e.source, colle: e.colle })
-        const evencheck = (number % 2) > 0 ? -1 : 1
-        e.lineStyle = {
-          color: 'source',
-          curveness: evencheck * ((number - evencheck > 0 ? 1 : 0) / count),
-        }
-      })
-      if (this.props.newClassGraph) {
-        nodes.forEach((e) => {
-          if (e.name === forcename) {
-            e.symbolSize = 60
-            e.category = '2'
-            e.label.normal.textStyle = {
-              color: '#000000',
-              fontWeight: '700',
-              fontSize: '16',
-            }
-          } else {
-            e.symbolSize = 20
-            e.category = '2'
-            e.label.normal.textStyle = {
-              color: '#000000',
-              fontWeight: 'normal',
-              fontSize: '12',
-            }
-          }
-        })
-      }
       options = {
-        title: {
-          text: `${this.props.forcename} 的关系图`,
-        },
         toolbox: {
           feature: {
             saveAsImage: {},
@@ -150,6 +132,7 @@ export default class GraphChart extends React.Component {
           categories: [
             {
               name: '0',
+              symbolSize: 30,
               itemStyle: {
                 normal: {
                   color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
@@ -164,11 +147,21 @@ export default class GraphChart extends React.Component {
             },
             ...categories,
           ],
+          lineStyle: {
+            color: 'source',
+          },
           emphasis: {
             lineStyle: {
               width: 5,
             },
           },
+          label: {
+            normal: {
+              show: true,
+              position: 'bottom',
+            },
+          },
+          symbolSize: 20,
           minRadius: 1,
           maxRadius: 5,
           coolDown: 0.995,
@@ -199,10 +192,13 @@ export default class GraphChart extends React.Component {
   }
 
   render() {
+    const { loading } = this.state
     return (
-      <div style={{ height: '100%', width: '100%' }}>
-        <div className="e-charts-graph" ref={(t) => this.dom = t} style={{ height: '100%', width: '100%' }} />
-      </div>
+      <Spin style={{ width: '100%' }} spinning={loading} size="large">
+        <div style={{ height: 480, width: '100%' }}>
+          <div className="e-charts-graph" ref={(t) => this.dom = t} style={{ height: '100%', width: '100%' }} />
+        </div>
+      </Spin>
     )
   }
 }

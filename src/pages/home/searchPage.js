@@ -106,8 +106,8 @@ class ClusterBroker extends React.Component {
     this.props.dispatch(routerRedux.push({
       pathname: '/knowledgeWiki/kgPage',
       query: {
-        key: 'chinese',
-        type: 'subject',
+        subject: 'chinese',
+        grade: '初中',
       },
     }))
   }

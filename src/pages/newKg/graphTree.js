@@ -26,6 +26,8 @@ class GraphTree extends React.Component {
     if (!_.isEqual(nextProps.treeData, this.props.treeData)) {
       dataList = []
       this.generateList(nextProps.treeData)
+      this.setState({ searchValue: '' })
+      this.onTreeSearch({ target: { value: '' } })
     }
     // if (nextProps.target !== '') {
     //   this.setState({ selectKey: nextProps.target })
