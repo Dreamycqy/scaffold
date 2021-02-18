@@ -22,7 +22,7 @@ class ClusterBroker extends React.Component {
     super(props)
     this.state = {
       filter: getUrlParams().filter || '',
-      subject: 'chinese',
+      subject: getUrlParams().subject || 'chinese',
       loading: false,
       dataSource: [],
       oriSource: [],
@@ -266,7 +266,7 @@ class ClusterBroker extends React.Component {
               type="primary" href="javascript:;"
               onClick={() => this.handleJumpGraph()}
             >
-              浏览图谱
+              浏览学科全图
             </Button>
           </div>
         </div>

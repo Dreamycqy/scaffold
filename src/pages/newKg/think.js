@@ -118,6 +118,11 @@ export default class GraphChart extends React.Component {
           trigger: 'item',
           triggerOn: 'mousemove',
         },
+        toolbox: {
+          feature: {
+            saveAsImage: {},
+          },
+        },
         title: {
           text: '鼠标单击节点，展开下层知识概念\n鼠标双击节点，查看与概念相关的知识点',
           textStyle: {

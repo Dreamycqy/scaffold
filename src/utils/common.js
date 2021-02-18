@@ -54,3 +54,40 @@ export const theSameLabel = (other) => {
   }
   return samelabel
 }
+export const handleIcon = (title) => {
+  switch (title) {
+    case 'graph':
+      return 'dot-chart'
+    case 'property':
+      return 'file'
+    case 'picture':
+      return 'picture'
+    case 'video':
+      return 'play-circle'
+    case 'question':
+      return 'read'
+    case 'books':
+      return 'read'
+    default:
+      return ''
+  }
+}
+
+export const handleTitle = (title) => {
+  switch (title) {
+    case 'graph':
+      return '知识地图'
+    case 'property':
+      return '知识卡片'
+    case 'picture':
+      return '相关图片'
+    case 'video':
+      return '教学视频'
+    case 'question':
+      return '相关习题'
+    case 'books':
+      return '教材出处'
+    default:
+      return ''
+  }
+}

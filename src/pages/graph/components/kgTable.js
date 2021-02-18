@@ -58,7 +58,7 @@ class KgTable extends React.Component {
 
   render() {
     return (
-      <div style={{ overflowY: 'scroll', height: 450 }}>
+      <div style={{ overflowY: 'scroll', maxHeight: 450 }}>
         <div ref={(e) => this.customTable = e}>
           <Table
             dataSource={this.props.dataSource}

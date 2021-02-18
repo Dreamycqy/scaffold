@@ -1,13 +1,16 @@
 import React from 'react'
-import { Anchor, Spin, Icon, Tabs } from 'antd'
+import { Anchor, Spin, Icon, Tabs, Select, Input } from 'antd'
 import _ from 'lodash'
 import Script from 'react-load-script'
-import { getUrlParams } from '@/utils/common'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { getUrlParams, handleIcon, handleTitle } from '@/utils/common'
 import { infoByInstanceName, infoByCmccUrl } from '@/services/knowledge'
 import { remakeGraphData } from '@/utils/graphData'
 import GrapeImg from '@/assets/grape.png'
 import edu10086 from '@/assets/edu10086.png'
 import Chart from '@/components/charts/newGraph'
+import subList from '@/constants/subject'
 import Think from './think'
 import GCard from './components/graphCard'
 import NewCard from './components/localCard'
@@ -21,6 +24,8 @@ import Styles from './style.less'
 
 const { Link } = Anchor
 const { TabPane } = Tabs
+const { Search } = Input
+const { Option } = Select
 const deleteList = [
   '学术论文',
   '标注',
@@ -36,6 +41,7 @@ const deleteList = [
   '类型',
 ]
 
+@connect()
 class KgContent extends React.Component {
   constructor(props) {
     super(props)
@@ -43,6 +49,7 @@ class KgContent extends React.Component {
       loading: false,
       forcename: unescape(getUrlParams().name || ''),
       subject: getUrlParams().subject || 'chinese',
+      targetSubject: getUrlParams().subject || 'chinese',
       dataSource: [],
       imgList: [],
       graph: {
@@ -131,25 +138,6 @@ class KgContent extends React.Component {
     e.preventDefault()
   }
 
-  handleTitle = (title) => {
-    switch (title) {
-      case 'graph':
-        return '知识地图'
-      case 'property':
-        return '知识卡片'
-      case 'picture':
-        return '相关图片'
-      case 'video':
-        return '教学视频'
-      case 'question':
-        return '相关习题'
-      case 'books':
-        return '教材出处'
-      default:
-        return ''
-    }
-  }
-
   handleSelectChart = (selectChart) => {
     this.setState({ selectChart })
   }
@@ -236,7 +224,18 @@ class KgContent extends React.Component {
   renderAnchor = (list) => {
     const result = []
     for (const title of list) {
-      result.push(<Link href={`#anchor_${title}`} style={{ margin: 10 }} title={this.handleTitle(title)} />)
+      result.push(
+        <Link
+          href={`#anchor_${title}`}
+          style={{ margin: 10 }}
+          title={(
+            <span>
+              <Icon type={handleIcon(title)} />
+              <span style={{ marginLeft: 10 }}>{handleTitle(title)}</span>
+            </span>
+          )}
+        />,
+      )
     }
     return result
   }
@@ -249,11 +248,22 @@ class KgContent extends React.Component {
     this.myTable.downLoad()
   }
 
+  jumpSearch = (value) => {
+    const { targetSubject } = this.state
+    this.props.dispatch(routerRedux.push({
+      pathname: '/knowledgeWiki/searchPage',
+      query: {
+        filter: value,
+        subject: targetSubject,
+      },
+    }))
+  }
+
   render() {
     const anchorList = ['graph', 'property', 'video']
     const {
       forcename, loading, graph, dataSource, imgList, booksMode,
-      subject, thinkData, selectChart, liveClassRoom, classRoomInfo,
+      subject, thinkData, selectChart, liveClassRoom, classRoomInfo, targetSubject,
     } = this.state
     if (imgList.length > 0) {
       anchorList.push('picture')
@@ -267,6 +277,22 @@ class KgContent extends React.Component {
       sheetDataFilter,
       sheetDataHeader,
     }
+    const selectItem = (
+      <Select
+        style={{
+          width: 80,
+          paddingLeft: 10,
+        }}
+        size="large"
+        value={targetSubject}
+        dropdownMatchSelectWidth
+        onChange={(value) => this.setState({ targetSubject: value })}
+      >
+        {subList.map((e) => {
+          return <Option style={{ textAlign: 'center' }} key={e.value} value={e.value}>{e.name}</Option>
+        })}
+      </Select>
+    )
     return (
       <div style={{ minWidth: 1300, backgroundColor: '#f2f6f7e6' }}>
         <Script
@@ -275,16 +301,27 @@ class KgContent extends React.Component {
           onError={() => this.onhandleScript('error')}
           onLoad={() => this.onhandleScript('load')}
         />
-        <div style={{ float: 'left', width: 250 }}>
-          <div style={{ height: 60, marginLeft: 30, marginTop: 6 }}>
-            <img style={{ float: 'left' }} src={GrapeImg} alt="" height="60px" />
-            <div style={{ fontSize: 32, float: 'left', color: '#6e72df', fontWeight: 700, marginTop: 6 }}>知识维基</div>
+        <div style={{ float: 'left', width: 200, textAlign: 'center' }}>
+          <div style={{ height: 50, marginLeft: 30, marginTop: 12 }}>
+            <img style={{ float: 'left', marginTop: 4 }} src={GrapeImg} alt="" height="45px" />
+            <div style={{ fontSize: 28, float: 'left', color: '#6e72df', fontWeight: 700, marginTop: 6 }}>知识维基</div>
           </div>
-          <Anchor onClick={this.handleAnchor} className={Styles.anchor}>
+          <Anchor
+            onClick={this.handleAnchor} className={Styles.anchor}
+            showInkInFixed={false} affix
+          >
             {this.renderAnchor(anchorList)}
           </Anchor>
         </div>
         <div style={{ overflow: 'hidden' }}>
+          <div style={{ margin: '20px 20px 0 20px' }}>
+            <Search
+              onSearch={(value) => this.jumpSearch(value)}
+              placeholder="请输入基础教育相关知识点"
+              addonBefore={selectItem}
+              size="large"
+            />
+          </div>
           <Spin spinning={loading}>
             <GCard show title="graph" selectChart={selectChart} onSelect={this.handleSelectChart}>
               {selectChart === 'relation'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { message, Pagination } from 'antd'
+import { message, Pagination, Empty } from 'antd'
 import Epub from '@/components/container/epubLink'
 import { search } from '@/services/edukg'
 
@@ -11,6 +11,7 @@ export default class Books extends React.Component {
       current: 1,
       pageSize: 10,
       total: 0,
+      loading: false,
     }
   }
 
@@ -25,6 +26,7 @@ export default class Books extends React.Component {
   }
 
   search = async () => {
+    this.setState({ loading: true })
     const { current, pageSize } = this.state
     this.setState({ dataSource: [] })
     const data = await search({
@@ -54,6 +56,7 @@ export default class Books extends React.Component {
     } else {
       message.error('请求失败！')
     }
+    this.setState({ loading: false })
   }
 
   renderItem = (e, index) => {
@@ -113,9 +116,14 @@ export default class Books extends React.Component {
   }
 
   render() {
-    const { dataSource, total, pageSize, current } = this.state
+    const { dataSource, total, pageSize, current, loading } = this.state
     return (
       <div>
+        <Empty
+          style={{ display: loading === false && dataSource.length < 1 ? 'block' : 'none', paddingTop: 30 }}
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description="暂无教材出处数据"
+        />
         <div style={{ overflowY: 'scroll', minHeight: 200, maxHeight: 500 }}>
           {dataSource.map(this.renderItem)}
         </div>

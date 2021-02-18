@@ -1,5 +1,5 @@
 import React from 'react'
-import { Radio } from 'antd'
+import { Radio, Spin, Empty } from 'antd'
 import { questionListByUriName } from '@/services/knowledge'
 
 class StudentPersona extends React.Component {
@@ -9,6 +9,7 @@ class StudentPersona extends React.Component {
       test: [],
       answerValue: {
       },
+      loading: false,
     }
   }
 
@@ -23,6 +24,7 @@ class StudentPersona extends React.Component {
   }
 
   getQs = async (uri) => {
+    this.setState({ loading: true })
     this.setState({
       test: [],
       answerValue: {},
@@ -89,6 +91,7 @@ class StudentPersona extends React.Component {
         test,
       })
     }
+    this.setState({ loading: false })
   }
 
   handleQuestion = (value, id) => {
@@ -152,10 +155,23 @@ class StudentPersona extends React.Component {
   }
 
   render() {
-    const { test } = this.state
+    const { test, loading } = this.state
     return (
       <div>
-        {this.renderQuestions(test)}
+        <Spin
+          spinning={loading}
+        >
+          <div
+            style={{ minHeight: 100 }}
+          >
+            <Empty
+              style={{ display: loading === false && test.length < 1 ? 'block' : 'none' }}
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="暂无教材出处数据"
+            />
+            {this.renderQuestions(test)}
+          </div>
+        </Spin>
       </div>
     )
   }
