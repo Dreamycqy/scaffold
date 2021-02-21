@@ -67,7 +67,7 @@ export const handleIcon = (title) => {
     case 'question':
       return 'read'
     case 'books':
-      return 'read'
+      return 'edit'
     default:
       return ''
   }

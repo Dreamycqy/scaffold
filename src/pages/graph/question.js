@@ -167,7 +167,7 @@ class StudentPersona extends React.Component {
             <Empty
               style={{ display: loading === false && test.length < 1 ? 'block' : 'none' }}
               image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description="暂无教材出处数据"
+              description="暂无习题数据"
             />
             {this.renderQuestions(test)}
           </div>

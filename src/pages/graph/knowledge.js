@@ -58,8 +58,7 @@ class KgContent extends React.Component {
       },
       thinkData: [],
       selectChart: 'relation',
-      liveClassRoom: '',
-      classRoomInfo: {},
+      liveClassRoom: [],
       booksMode: 'masonry',
     }
   }
@@ -97,24 +96,26 @@ class KgContent extends React.Component {
       const { label, property, content } = data.data
       const params = remakeGraphData(content, label, 'instance')
       this.setState({
-        dataSource: property ? this.handleData(property) : [],
+        dataSource: property ? await this.handleData(property) : [],
         graph: params,
       })
     }
     this.setState({ loading: false })
   }
 
-  handleData = (array) => {
+  handleData = async (array) => {
     const result = []
     const imgList = []
-    array.forEach((e) => {
+    const liveClassRoom = []
+    for (const e of array) {
       if (e.predicateLabel && deleteList.indexOf(e.predicateLabel) < 0) {
         if (e.predicateLabel.indexOf('中移动直播课网址') > -1) {
-          this.setState({ liveClassRoom: e.object })
-          this.handleVideoInfo(e.object)
-          return
-        }
-        if (e.object.indexOf('getjpg') > 0 || e.object.indexOf('getpng') > 0) {
+          const info = await this.handleVideoInfo(e.object)
+          liveClassRoom.push({
+            url: e.object,
+            info,
+          })
+        } else if (e.object.indexOf('getjpg') > 0 || e.object.indexOf('getpng') > 0) {
           imgList.push(e)
         } else {
           const target = _.find(result, { predicateLabel: e.predicateLabel })
@@ -129,8 +130,8 @@ class KgContent extends React.Component {
           }
         }
       }
-    })
-    this.setState({ imgList })
+    }
+    this.setState({ imgList, liveClassRoom })
     return result
   }
 
@@ -148,8 +149,6 @@ class KgContent extends React.Component {
       '': '',
       知识内容: '',
     }]
-    const sheetDataFilter = ['知识点', '', '知识内容']
-    const sheetDataHeader = ['知识点', '', '知识内容']
     list.forEach((e) => {
       if (e.labelList) {
         transSource.push({
@@ -165,7 +164,7 @@ class KgContent extends React.Component {
         })
       }
     })
-    return { transSource, sheetDataFilter, sheetDataHeader }
+    return { transSource }
   }
 
   handleExpandGraph = async (target) => {
@@ -178,22 +177,22 @@ class KgContent extends React.Component {
       url,
     })
     if (data) {
-      this.setState({
-        classRoomInfo: data.data,
-      })
+      return data.data
+    } else {
+      return {}
     }
   }
 
-  handleVideo = (url, classRoomInfo) => {
+  handleVideo = (item) => {
     return (
-      <div style={{ padding: 10 }}>
-        <a href={url.length === 0 ? 'http://edu.10086.cn/cloud/liveClassroom/redirectLive?type=live_Index' : url} target="_blank">
-          <img src={classRoomInfo.coverImageUrl ? classRoomInfo.coverImageUrl : edu10086} height="240px" width="360px" alt="" />
+      <div style={{ padding: 10, float: 'left', margin: '0 10px' }}>
+        <a href={item.url.length === 0 ? 'http://edu.10086.cn/cloud/liveClassroom/redirectLive?type=live_Index' : item.url} target="_blank">
+          <img src={item.info.coverImageUrl ? item.info.coverImageUrl : edu10086} height="240px" width="360px" alt="" />
           <div style={{ width: 360, textAlign: 'center', fontSize: 16, marginTop: 6 }}>
-            {classRoomInfo.name ? classRoomInfo.name : '和教育直播课'}
+            {item.info.name ? item.info.name : '和教育直播课'}
           </div>
           <div style={{ width: 360, textAlign: 'center', fontSize: 14 }}>
-            {classRoomInfo.teacherName ? `主讲：${classRoomInfo.teacherName}` : null}
+            {item.info.teacherName ? `主讲：${item.info.teacherName}` : null}
           </div>
         </a>
       </div>
@@ -263,19 +262,23 @@ class KgContent extends React.Component {
     const anchorList = ['graph', 'property', 'video']
     const {
       forcename, loading, graph, dataSource, imgList, booksMode,
-      subject, thinkData, selectChart, liveClassRoom, classRoomInfo, targetSubject,
+      subject, thinkData, selectChart, liveClassRoom, targetSubject,
     } = this.state
     if (imgList.length > 0) {
       anchorList.push('picture')
     }
     anchorList.push('question')
     anchorList.push('books')
-    const { transSource, sheetDataFilter, sheetDataHeader } = this.handleConcat(dataSource)
     const dataConfig = {
-      title: forcename,
-      dataSource: transSource,
-      sheetDataFilter,
-      sheetDataHeader,
+      title: '',
+      dataSource: [],
+      sheetDataFilter: ['知识点', '', '知识内容'],
+      sheetDataHeader: ['知识点', '', '知识内容'],
+    }
+    if (dataSource.length) {
+      const { transSource } = this.handleConcat(dataSource)
+      dataConfig.title = forcename
+      dataConfig.dataSource = transSource
     }
     const selectItem = (
       <Select
@@ -367,18 +370,20 @@ class KgContent extends React.Component {
               />
             </NewCard>
             <NewCard show title="video">
-              <div style={{ height: 300 }}>
-                {this.handleVideo(liveClassRoom, classRoomInfo)}
+              <div style={{ height: 320, overflowX: 'scroll' }}>
+                <div style={{ minWidth: liveClassRoom.length * 400 }}>
+                  {liveClassRoom.map((item) => { return this.handleVideo(item) })}
+                </div>
               </div>
             </NewCard>
             <NewCard show={imgList.length > 0} title="picture">
-              <Gallery imgList={imgList} />
+              <Gallery imgList={_.uniqBy(imgList, 'object')} />
             </NewCard>
             <NewCard show title="question">
               <Questions uri={forcename} />
             </NewCard>
             <NewCard show title="books" booksMode={booksMode} handleChangeBooksMode={this.handleChangeBooksMode}>
-              {booksMode === 'list' ? <BooksList name={forcename} /> : <BooksMasonry name={forcename} />}
+              {booksMode === 'list' ? <BooksList name={forcename} subject={subject} /> : <BooksMasonry name={forcename} subject={subject} />}
             </NewCard>
           </Spin>
         </div>
