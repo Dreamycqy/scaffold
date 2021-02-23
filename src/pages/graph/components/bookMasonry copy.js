@@ -1,7 +1,7 @@
 import React from 'react'
 import { message, Spin, Empty } from 'antd'
 import Masonry from 'react-masonry-component'
-import { search } from '@/services/edukg'
+import { bookInfoBySearchKey } from '@/services/knowledge'
 import Card from './bookCard'
 
 export default class BookMasonry extends React.Component {
@@ -37,30 +37,19 @@ export default class BookMasonry extends React.Component {
   search = async () => {
     this.setState({ loading: true })
     const { current, pageSize } = this.state
-    const data = await search({
+    const data = await bookInfoBySearchKey({
       searchKey: this.props.name,
       curPage: current,
       pageSize,
+      subject: this.props.subject,
     })
-    if (data.fullsearch) {
-      const doc = []
-      const video = []
-      data.links.results.forEach((e) => {
-        e.urilinks.forEach((i) => {
-          if (i.sourcetype === '文档') {
-            doc.push(i)
-          } else {
-            video.push(i)
-          }
-        })
-      })
+    if (data.data) {
       const { dataSource } = this.state
       await this.setState({
-        dataSource: dataSource.concat(data.fullsearch.data.pager.rows),
-        current: data.fullsearch.data.pager.curPage,
-        pageSize: data.fullsearch.data.pager.pageSize,
-        total: data.fullsearch.data.pager.totalCount,
-        isEnd: data.fullsearch.data.pager.rows.length < 1,
+        dataSource: dataSource.concat(data.data.book),
+        current: data.data.page,
+        total: data.data.allSize,
+        isEnd: data.data.book.length < 1,
       })
     } else {
       message.error('请求失败！')

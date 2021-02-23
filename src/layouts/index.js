@@ -50,7 +50,7 @@ class MainLayout extends React.Component {
             <div style={{ padding: '0 30px' }}>
               <div style={{ textAlign: 'center', color: 'white' }}>
                 <div style={{ display: 'inline-block' }}>
-                  <div style={{ fontSize: 18 }}>Copyright© 2018 KEG</div>
+                  <div style={{ fontSize: 18 }}>Copyright© 2021 KEG</div>
                   <div style={{ fontSize: 10 }}>
                     清华大学知识工程研究室&nbsp;&nbsp;&nbsp;&nbsp;京ICP备19056327号-1
                   </div>

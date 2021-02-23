@@ -71,3 +71,11 @@ export function searchByKnowIdV3(body, rSymbol) {
     rSymbol,
   })
 }
+
+export function bookInfoBySearchKey(body, rSymbol) {
+  return request.get({
+    url: '/knowledgeWiki/api/knowledgeUri/wiki/bookInfoBySearchKey',
+    data: body,
+    rSymbol,
+  })
+}

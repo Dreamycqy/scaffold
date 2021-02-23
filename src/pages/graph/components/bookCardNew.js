@@ -11,18 +11,19 @@ export default class BookMasonry extends React.Component {
 
   render() {
     const {
-      bookName, htmlName, bookId, htmlId, content, subject, edition, grade, editionTime, isbn,
+      bookInfo, images,
     } = this.props.data
+    const {
+      name, coverImage, subject, edition, grade, editionTime, isbn,
+    } = bookInfo
     return (
       <Card
         style={{ width: '30%', margin: '1%', borderRadius: 4, boxShadow: '4px 4px 4px #00000049', padding: 10 }}
       >
         <h4>
           资源出处：《
-          {bookName}
-          》 /
-          {' '}
-          {htmlName}
+          {name}
+          》
         </h4>
         <div style={{ overflow: 'hidden' }}>
           <div style={{ fontSize: 12, color: '#b0b8b9', float: 'left', paddingTop: 10 }}>
@@ -53,13 +54,13 @@ export default class BookMasonry extends React.Component {
           </div>
           <div style={{ float: 'right', marginRight: 10 }}>
             <img
-              src={`http://kb.cs.tsinghua.edu.cn/apiresourceinfo/getcoverimg?resId=${bookId}`}
+              src={`http://39.100.31.203:8001/api/wiki/getImage?path=${coverImage}`}
               alt="" height="112px"
               width="84px"
             />
           </div>
         </div>
-        <Epub htmlId={htmlId} list={content} searchKey={this.props.name} />
+        {/* <Epub list={images} searchKey={this.props.name} /> */}
       </Card>
     )
   }

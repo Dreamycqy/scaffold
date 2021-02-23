@@ -372,7 +372,18 @@ class KgContent extends React.Component {
             <NewCard show title="video">
               <div style={{ height: 320, overflowX: 'scroll' }}>
                 <div style={{ minWidth: liveClassRoom.length * 400 }}>
-                  {liveClassRoom.map((item) => { return this.handleVideo(item) })}
+                  {liveClassRoom.length > 0
+                    ? liveClassRoom.map((item) => { return this.handleVideo(item) })
+                    : (
+                      <div style={{ padding: 10, float: 'left', margin: '0 10px' }}>
+                        <a href="http://edu.10086.cn/cloud/liveClassroom/redirectLive?type=live_Index" target="_blank">
+                          <img src={edu10086} height="240px" width="360px" alt="" />
+                          <div style={{ width: 360, textAlign: 'center', fontSize: 16, marginTop: 6 }}>
+                            和教育直播课
+                          </div>
+                        </a>
+                      </div>
+                    )}
                 </div>
               </div>
             </NewCard>
@@ -383,7 +394,7 @@ class KgContent extends React.Component {
               <Questions uri={forcename} />
             </NewCard>
             <NewCard show title="books" booksMode={booksMode} handleChangeBooksMode={this.handleChangeBooksMode}>
-              {booksMode === 'list' ? <BooksList name={forcename} subject={subject} /> : <BooksMasonry name={forcename} subject={subject} />}
+              {booksMode === 'list' ? <BooksList name={forcename} subject={subject} /> : <BooksMasonry name={forcename} subject={_.find(subList, { value: subject }).name} />}
             </NewCard>
           </Spin>
         </div>
