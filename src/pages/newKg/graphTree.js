@@ -6,6 +6,7 @@ const { TreeNode } = Tree
 const { Search } = Input
 let dataList = []
 let parentKey = []
+let keyList = []
 
 class GraphTree extends React.Component {
   constructor(props) {
@@ -71,7 +72,19 @@ class GraphTree extends React.Component {
     await this.setState({
       selectKey: keys[0],
     })
-    this.props.selectTarget(keys[0])
+    keyList = []
+    this.getAllParent(keys[0], dataList)
+    this.props.selectTarget(keys[0], _.uniq(keyList).reverse())
+  }
+
+  getAllParent = (key, list) => {
+    keyList.push(key)
+    const tag = _.find(list, { key: key.substr(0, key.length - 3) })
+    if (tag) {
+      this.getAllParent(tag.key, list)
+    } else {
+      keyList.push(dataList[0].key)
+    }
   }
 
   getParentKey = (key, tree) => {

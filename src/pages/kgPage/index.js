@@ -247,17 +247,18 @@ class FirstGraph extends React.Component {
   }
 
   handleSelect = (uri) => {
-    if (uri === this.state.uri) {
-      return
-    }
-    this.setState({ uri }, () => {
-      // this.getDetail()
-      // this.getData()
-    })
+    // if (uri === this.state.uri) {
+    //   return
+    // }
+    // this.setState({ uri }, () => {
+    //   // this.getDetail()
+    //   // this.getData()
+    // })
   }
 
   selectTarget = (uri) => {
-    this.handleSelect(uri)
+    console.log(uri, '!')
+    // this.handleSelect(uri)
   }
 
   render() {

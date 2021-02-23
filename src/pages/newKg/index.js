@@ -27,6 +27,7 @@ class FirstGraph extends React.Component {
       loadingChart: false,
       subject: getUrlParams().subject ? getUrlParams().subject : 'chinese',
       targetId: '',
+      targetList: [],
       gradeLevel: getUrlParams().grade ? getUrlParams().grade : '小学',
       rawData: [],
       thinkData: {},
@@ -164,13 +165,13 @@ class FirstGraph extends React.Component {
     }
   }
 
-  selectTarget = (targetId) => {
-    this.setState({ targetId })
+  selectTarget = (targetId, targetList) => {
+    this.setState({ targetId, targetList })
   }
 
   render() {
     const {
-      loadingChart, thinkData, subject, gradeLevel, targetId, treeData, rawData,
+      loadingChart, thinkData, subject, gradeLevel, targetId, treeData, rawData, targetList,
     } = this.state
     const { locale } = this.props
 
@@ -234,6 +235,8 @@ class FirstGraph extends React.Component {
                   <Think
                     graph={thinkData}
                     subject={subject}
+                    target={targetId}
+                    targetList={targetList}
                     getNewInstance={this.getNewInstance}
                   />
                 </div>

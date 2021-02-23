@@ -18,11 +18,11 @@ export default class GraphChart extends React.Component {
   }
 
   componentDidMount() {
-    const { graph } = this.props
+    const { graph, targetList } = this.props
     try {
-      this.instance = this.renderChart(this.dom, graph, this.instance)
+      this.instance = this.renderChart(this.dom, graph, targetList, this.instance)
       resizeListener(this.dom, () => {
-        this.instance = this.renderChart(this.dom, graph, this.instance, true)
+        this.instance = this.renderChart(this.dom, graph, targetList, this.instance, true)
       })
     } catch (e) {
       console.log(e); // eslint-disable-line
@@ -30,13 +30,42 @@ export default class GraphChart extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const { graph } = nextProps
-    this.instance = this.renderChart(this.dom, graph, this.instance)
+    const { graph, targetList } = nextProps
+    this.instance = this.renderChart(this.dom, graph, targetList, this.instance)
   }
 
   componentWillUnmount() {
     unbind(this.dom)
     this.instance && this.instance.dispose()  //  eslint-disable-line
+  }
+
+  handleDataNew = (data, targetList) => {
+    if (data.length < 1) {
+      return data
+    }
+    if (targetList.length > 2) {
+      data.children.forEach((e) => {
+        if (e['知识点编码'] === targetList[1]) {
+          e.collapsed = false
+          e.isExpand = true
+          e.children.forEach((f) => {
+            if (f['知识点编码'] === targetList[2]) {
+              f.collapsed = false
+              f.isExpand = true
+              if (targetList.length > 3) {
+                f.children.forEach((g) => {
+                  if (g['知识点编码'] === targetList[3]) {
+                    g.collapsed = false
+                    g.isExpand = true
+                  }
+                })
+              }
+            }
+          })
+        }
+      })
+    }
+    return data
   }
 
   handleData = (data, color) => {
@@ -99,7 +128,7 @@ export default class GraphChart extends React.Component {
     })
   }
 
-  renderChart = (dom, graph, instance, forceUpdate = false) => {
+  renderChart = (dom, graph, targetList, instance, forceUpdate = false) => {
     let options
     const that = this
     if (!graph) {
@@ -112,7 +141,7 @@ export default class GraphChart extends React.Component {
         },
       }
     } else {
-      const result = graph
+      const result = this.handleDataNew(graph, targetList)
       options = {
         tooltip: {
           trigger: 'item',
