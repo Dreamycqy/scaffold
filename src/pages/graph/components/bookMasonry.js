@@ -43,17 +43,6 @@ export default class BookMasonry extends React.Component {
       pageSize,
     })
     if (data.fullsearch) {
-      const doc = []
-      const video = []
-      data.links.results.forEach((e) => {
-        e.urilinks.forEach((i) => {
-          if (i.sourcetype === '文档') {
-            doc.push(i)
-          } else {
-            video.push(i)
-          }
-        })
-      })
       const { dataSource } = this.state
       await this.setState({
         dataSource: dataSource.concat(data.fullsearch.data.pager.rows),

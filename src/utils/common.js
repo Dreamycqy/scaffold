@@ -65,9 +65,9 @@ export const handleIcon = (title) => {
     case 'video':
       return 'play-circle'
     case 'question':
-      return 'read'
-    case 'books':
       return 'edit'
+    case 'books':
+      return 'read'
     default:
       return ''
   }

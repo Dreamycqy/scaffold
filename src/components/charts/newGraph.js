@@ -83,14 +83,14 @@ export default class GraphChart extends React.Component {
         }
       })
       graph.links.forEach((e) => {
-        const countList = graph.links.filter((j) => {
-          return j.source === e.source
-        })
+        const countList = _.uniqBy(graph.links.filter((j) => {
+          return j.target === e.target
+        }), 'colle')
         const count = countList.length
-        const number = _.findIndex(countList, { source: e.source, colle: e.colle })
+        const number = _.findIndex(countList, { target: e.target, colle: e.colle })
         const evencheck = (number % 2) > 0 ? -1 : 1
         e.lineStyle = {
-          color: 'source',
+          color: 'target',
           curveness: evencheck * ((number - evencheck > 0 ? 1 : 0) / count),
         }
       })

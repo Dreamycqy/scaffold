@@ -2,7 +2,7 @@ import React from 'react'
 import { message, Spin, Empty } from 'antd'
 import Masonry from 'react-masonry-component'
 import { bookInfoBySearchKey } from '@/services/knowledge'
-import Card from './bookCard'
+import Card from './bookCardNew'
 
 export default class BookMasonry extends React.Component {
   constructor(props) {

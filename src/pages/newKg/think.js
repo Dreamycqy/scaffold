@@ -1,7 +1,10 @@
 import React from 'react'
 import { Modal } from 'antd'
+import _ from 'lodash'
 import * as echarts from 'echarts'
 import resizeListener, { unbind } from 'element-resize-event'
+import { getUrlParams } from '@/utils/common'
+import subList from '@/constants/subject'
 import Indis from './individuals'
 
 const colors = ['#32C5E9', '#67E0E3', '#9FE6B8', '#FFDB5C', '#ff9f7f', '#fb7293', '#E062AE', '#E690D1', '#e7bcf3', '#9d96f5', '#8378EA', '#96BFFF']
@@ -12,8 +15,15 @@ export default class GraphChart extends React.Component {
     this.dom = null
     this.instance = null
     this.state = {
-      select: '',
-      selectId: '',
+      select: getUrlParams().kgName ? getUrlParams().kgName : '',
+      selectId: getUrlParams().kgId ? getUrlParams().kgId : '',
+      visible: false,
+    }
+  }
+
+  UNSAFE_componentWillMount() {
+    if (getUrlParams().kgName) {
+      this.setState({ visible: true })
     }
   }
 
@@ -149,7 +159,9 @@ export default class GraphChart extends React.Component {
         },
         toolbox: {
           feature: {
-            saveAsImage: {},
+            saveAsImage: {
+              name: `${this.props.gradeLevel}${_.find(subList, { value: this.props.subject }).name}的知识思维导图`,
+            },
           },
         },
         title: {

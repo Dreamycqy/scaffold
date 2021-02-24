@@ -1,6 +1,7 @@
 import React from 'react'
 import { Icon, Input, Tree } from 'antd'
 import _ from 'lodash'
+import { getUrlParams } from '@/utils/common'
 
 const { TreeNode } = Tree
 const { Search } = Input
@@ -14,7 +15,7 @@ class GraphTree extends React.Component {
     this.state = {
       expandedKeys: [],
       selectKey: '',
-      searchValue: '',
+      searchValue: getUrlParams().kgName ? getUrlParams().kgName : '',
       autoExpandParent: true,
     }
   }
@@ -27,8 +28,7 @@ class GraphTree extends React.Component {
     if (!_.isEqual(nextProps.treeData, this.props.treeData)) {
       dataList = []
       this.generateList(nextProps.treeData)
-      this.setState({ searchValue: '' })
-      this.onTreeSearch({ target: { value: '' } })
+      this.onTreeSearch({ target: { value: getUrlParams().kgName ? getUrlParams().kgName : '' } }, nextProps.treeData)
     }
     // if (nextProps.target !== '') {
     //   this.setState({ selectKey: nextProps.target })
@@ -46,15 +46,18 @@ class GraphTree extends React.Component {
     })
   }
 
-  onTreeSearch = (e) => {
+  onTreeSearch = (e, treeData) => {
     const { value } = e.target
     parentKey = []
+    if (dataList.length < 1) {
+      return
+    }
     dataList.forEach((item) => {
       if (!item.key) {
         return
       }
       if (item.name.indexOf(value) > -1) {
-        this.getParentKey(item.key, this.props.treeData)
+        this.getParentKey(item.key, treeData || this.props.treeData)
       }
     })
     const expandedKeys = parentKey

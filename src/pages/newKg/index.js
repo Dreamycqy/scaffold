@@ -237,6 +237,7 @@ class FirstGraph extends React.Component {
                     subject={subject}
                     target={targetId}
                     targetList={targetList}
+                    gradeLevel={gradeLevel}
                     getNewInstance={this.getNewInstance}
                   />
                 </div>

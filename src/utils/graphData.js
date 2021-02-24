@@ -111,8 +111,8 @@ export const remakeGraphData = (list, forcename) => {
         })
         if (!_.find(links, { source: name, colle })) {
           links.push({
-            source: name,
-            target: forcename,
+            source: forcename,
+            target: name,
             colle,
             value: (temp[colle].length),
             label: {

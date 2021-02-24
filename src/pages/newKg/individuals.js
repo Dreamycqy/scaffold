@@ -75,7 +75,7 @@ export default class GraphChart extends React.Component {
     if (category === '0') {
       return
     }
-    window.open(`/knowledgeWiki/knowledge?name=${name}&subject=${subject}`)
+    window.open(`/knowledgeWiki/knowledge?name=${name.split(' (知识点)')[0]}&subject=${subject}`)
   }
 
   renderChart = (dom, graph, forcename, instance, forceUpdate = false) => {
@@ -103,7 +103,9 @@ export default class GraphChart extends React.Component {
       options = {
         toolbox: {
           feature: {
-            saveAsImage: {},
+            saveAsImage: {
+              name: `概念 ${this.props.select} 的相关知识点`,
+            },
           },
         },
         series: [{
@@ -195,7 +197,7 @@ export default class GraphChart extends React.Component {
     const { loading } = this.state
     return (
       <Spin style={{ width: '100%' }} spinning={loading} size="large">
-        <div style={{ height: 480, width: '100%' }}>
+        <div style={{ height: 480, width: 860 }}>
           <div className="e-charts-graph" ref={(t) => this.dom = t} style={{ height: '100%', width: '100%' }} />
         </div>
       </Spin>
