@@ -15,7 +15,7 @@ class GraphTree extends React.Component {
     this.state = {
       expandedKeys: [],
       selectKey: '',
-      searchValue: getUrlParams().kgName ? getUrlParams().kgName : '',
+      searchValue: getUrlParams().kgId ? getUrlParams().kgId : '',
       autoExpandParent: true,
     }
   }
@@ -28,7 +28,11 @@ class GraphTree extends React.Component {
     if (!_.isEqual(nextProps.treeData, this.props.treeData)) {
       dataList = []
       this.generateList(nextProps.treeData)
-      this.onTreeSearch({ target: { value: getUrlParams().kgName ? getUrlParams().kgName : '' } }, nextProps.treeData)
+      const id = getUrlParams().kgId
+      if (id) {
+        this.onTreeSearch({ target: { value: _.find(dataList, { key: id }).name } }, nextProps.treeData)
+        this.onSelect([id])
+      }
     }
     // if (nextProps.target !== '') {
     //   this.setState({ selectKey: nextProps.target })

@@ -1,11 +1,8 @@
 import React from 'react'
-import { Modal } from 'antd'
 import _ from 'lodash'
 import * as echarts from 'echarts'
 import resizeListener, { unbind } from 'element-resize-event'
-import { getUrlParams } from '@/utils/common'
 import subList from '@/constants/subject'
-import Indis from './individuals'
 
 const colors = ['#32C5E9', '#67E0E3', '#9FE6B8', '#FFDB5C', '#ff9f7f', '#fb7293', '#E062AE', '#E690D1', '#e7bcf3', '#9d96f5', '#8378EA', '#96BFFF']
 
@@ -15,16 +12,10 @@ export default class GraphChart extends React.Component {
     this.dom = null
     this.instance = null
     this.state = {
-      select: getUrlParams().kgName ? getUrlParams().kgName : '',
-      selectId: getUrlParams().kgId ? getUrlParams().kgId : '',
-      visible: false,
     }
   }
 
   UNSAFE_componentWillMount() {
-    if (getUrlParams().kgName) {
-      this.setState({ visible: true })
-    }
   }
 
   componentDidMount() {
@@ -41,6 +32,10 @@ export default class GraphChart extends React.Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { graph, targetList } = nextProps
+    if (_.isEqual(this.props.graph, nextProps.graph)
+    && _.isEqual(this.props.targetList, nextProps.targetList)) {
+      return
+    }
     this.instance = this.renderChart(this.dom, graph, targetList, this.instance)
   }
 
@@ -131,9 +126,8 @@ export default class GraphChart extends React.Component {
   }
 
   handleModal = (params) => {
-    this.setState({
+    this.props.showModal({
       visible: true,
-      select: params.data.name,
       selectId: params.data.key,
     })
   }
@@ -232,22 +226,8 @@ export default class GraphChart extends React.Component {
   }
 
   render() {
-    const { visible, select, selectId } = this.state
     return (
-      <div style={{ height: '100%', width: '100%' }}>
-        <Modal
-          title={`概念 ${select} 所关联的知识点`}
-          visible={visible}
-          onCancel={() => this.setState({ visible: false })}
-          footer={[null]}
-          width="900px"
-        >
-          <div style={{ height: 480, width: 900 }}>
-            <Indis select={select} selectId={selectId} subject={this.props.subject} />
-          </div>
-        </Modal>
-        <div className="e-charts-graph" ref={(t) => this.dom = t} style={{ height: '100%', width: '100%' }} />
-      </div>
+      <div className="e-charts-graph" ref={(t) => this.dom = t} style={{ height: '100%', width: '100%' }} />
     )
   }
 }

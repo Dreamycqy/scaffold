@@ -107,7 +107,7 @@ class ClusterBroker extends React.Component {
       pathname: '/knowledgeWiki/kgPage',
       query: {
         subject: 'chinese',
-        grade: '初中',
+        grade: '高中',
       },
     }))
   }

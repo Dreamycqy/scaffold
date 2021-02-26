@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Spin, Select } from 'antd'
+import { Card, Spin, Select, Modal } from 'antd'
 import { connect } from 'dva'
 import _ from 'lodash'
 import Script from 'react-load-script'
@@ -8,6 +8,7 @@ import { searchByKnowId } from '@/services/knowledge'
 import subjectList from '@/constants/subject'
 import Think from './think'
 import Tree from './graphTree'
+import Indis from './individuals'
 import Styles from './style.less'
 
 const { Option } = Select
@@ -28,9 +29,11 @@ class FirstGraph extends React.Component {
       subject: getUrlParams().subject ? getUrlParams().subject : 'chinese',
       targetId: '',
       targetList: [],
-      gradeLevel: getUrlParams().grade ? getUrlParams().grade : '小学',
+      gradeLevel: getUrlParams().grade ? getUrlParams().grade : '高中',
       rawData: [],
       thinkData: {},
+      selectId: getUrlParams().kgId ? getUrlParams().kgId : '',
+      visible: false,
     }
   }
 
@@ -39,6 +42,9 @@ class FirstGraph extends React.Component {
     this.setState({
       targetId: _.find(subjectList, { value: subject }).name,
     })
+    if (getUrlParams().kgId) {
+      this.setState({ visible: true })
+    }
   }
 
   onhandleScript = async (sign) => {
@@ -76,6 +82,10 @@ class FirstGraph extends React.Component {
       this.setState({ thinkData })
     }
     this.setState({ loadingChart: false })
+  }
+
+  getSelectId = (id) => {
+    return _.find(this.state.rawData, { 知识点编码: id }) ? _.find(this.state.rawData, { 知识点编码: id })['知识点名称'] : ''
   }
 
   handleThinkData = (data, subject, gradeLevel) => {
@@ -169,9 +179,14 @@ class FirstGraph extends React.Component {
     this.setState({ targetId, targetList })
   }
 
+  showModal = (params) => {
+    this.setState(params)
+  }
+
   render() {
     const {
       loadingChart, thinkData, subject, gradeLevel, targetId, treeData, rawData, targetList,
+      visible, selectId,
     } = this.state
     const { locale } = this.props
 
@@ -198,6 +213,17 @@ class FirstGraph extends React.Component {
 
     return (
       <div style={{ padding: '20px 10px', minWidth: 1300 }}>
+        <Modal
+          title={`概念 ${this.getSelectId(selectId)} 所关联的知识点`}
+          visible={visible}
+          onCancel={() => this.setState({ visible: false })}
+          footer={[null]}
+          width="900px"
+        >
+          <div style={{ height: 480, width: 900 }}>
+            <Indis select={this.getSelectId(selectId)} selectId={selectId} subject={subject} />
+          </div>
+        </Modal>
         <Script
           url="http://39.97.172.123:3000/cmcc/data.js"
           onCreate={() => this.onhandleScript('create')}
@@ -239,6 +265,7 @@ class FirstGraph extends React.Component {
                     targetList={targetList}
                     gradeLevel={gradeLevel}
                     getNewInstance={this.getNewInstance}
+                    showModal={this.showModal}
                   />
                 </div>
               </div>

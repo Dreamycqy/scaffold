@@ -59,8 +59,8 @@ export default class GraphChart extends React.Component {
           category: newName,
         })
         links.push({
-          source: newName,
-          target: select,
+          source: select,
+          target: newName,
         })
       })
     }
@@ -101,6 +101,13 @@ export default class GraphChart extends React.Component {
         }
       })
       options = {
+        title: {
+          text: '鼠标单击关联知识点，跳转到该知识点详情页',
+          textStyle: {
+            fontSize: 14,
+            color: '#000000a6',
+          },
+        },
         toolbox: {
           feature: {
             saveAsImage: {
@@ -150,7 +157,7 @@ export default class GraphChart extends React.Component {
             ...categories,
           ],
           lineStyle: {
-            color: 'source',
+            color: 'target',
           },
           emphasis: {
             lineStyle: {

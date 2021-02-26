@@ -111,7 +111,7 @@ class KgContent extends React.Component {
     for (const e of array) {
       if (e.predicateLabel && deleteList.indexOf(e.predicateLabel) < 0) {
         if (e.predicateLabel.indexOf('中移动直播课网址') > -1) {
-          const info = await this.handleVideoInfo(e.object)
+          const info = await this.handleVideoInfo(e.object) // eslint-disable-line
           liveClassRoom.push({
             url: e.object,
             info,
