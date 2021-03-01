@@ -26,7 +26,7 @@ class Favorite extends React.Component {
                 mode="inline"
                 theme="light"
                 selectedKeys={[subject]}
-                onSelect={e => this.setState({ subject: e.key })}
+                onSelect={(e) => this.setState({ subject: e.key })}
                 style={{ height: '100%', minHeight: 700 }}
               >
                 <Menu.Item key="chinese">语文</Menu.Item>

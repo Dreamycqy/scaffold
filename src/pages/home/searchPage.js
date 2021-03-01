@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, AutoComplete, Input, List, Empty, Avatar, Divider, Select } from 'antd'
 import { connect } from 'dva'
+import _ from 'lodash'
 import { routerRedux } from 'dva/router'
 import { searchResultV3 } from '@/services/knowledge'
 import { getUrlParams } from '@/utils/common'
@@ -22,7 +23,7 @@ class ClusterBroker extends React.Component {
     super(props)
     this.state = {
       filter: getUrlParams().filter || '',
-      subject: getUrlParams().subject || 'chinese',
+      subject: getUrlParams().subject ? _.find(subList, { cmcc: getUrlParams().subject }).value : 'chinese',
       loading: false,
       dataSource: [],
       oriSource: [],
@@ -106,8 +107,8 @@ class ClusterBroker extends React.Component {
     this.props.dispatch(routerRedux.push({
       pathname: '/knowledgeWiki/kgPage',
       query: {
-        subject: 'chinese',
-        grade: '高中',
+        // subject: 'chinese',
+        // grade: '高中',
       },
     }))
   }

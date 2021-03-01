@@ -49,8 +49,8 @@ class KgContent extends React.Component {
     this.state = {
       loading: false,
       forcename: unescape(getUrlParams().name || ''),
-      subject: getUrlParams().subject || 'chinese',
-      targetSubject: getUrlParams().subject || 'chinese',
+      subject: getUrlParams().subject ? _.find(subList, { cmcc: getUrlParams().subject }).value : 'chinese',
+      targetSubject: getUrlParams().subject ? _.find(subList, { cmcc: getUrlParams().subject }).value : 'chinese',
       dataSource: [],
       imgList: [],
       graph: {
