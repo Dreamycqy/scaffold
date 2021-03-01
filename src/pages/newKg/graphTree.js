@@ -82,6 +82,12 @@ class GraphTree extends React.Component {
     keyList = []
     this.getAllParent(keys[0], dataList)
     this.props.selectTarget(keys[0], _.uniq(keyList).reverse())
+    if (keys[0] !== '语文') {
+      this.props.showModal({
+        visible: true,
+        selectId: keys[0],
+      })
+    }
   }
 
   getAllParent = (key, list) => {

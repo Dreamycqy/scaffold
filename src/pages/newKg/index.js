@@ -260,6 +260,7 @@ class FirstGraph extends React.Component {
                     treeData={treeData}
                     selectTarget={this.selectTarget}
                     target={targetId}
+                    showModal={this.showModal}
                   />
                 </div>
                 <div style={{ height: '100%', width: 1000, overflow: 'hidden' }}>

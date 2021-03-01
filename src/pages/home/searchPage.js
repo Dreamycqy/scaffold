@@ -218,7 +218,7 @@ class ClusterBroker extends React.Component {
                       <a
                         href="javascript:;"
                         onClick={() => {
-                          window.open(`/knowledgeWiki/knowledge?name=${escape(item.entity_name)}&type=instance&subject=${subject}`)
+                          window.open(`/knowledgeWiki/knowledge?name=${escape(item.entity_name)}&type=instance&subject=${_.find(subList, { value: subject }).cmcc}`)
                         }}
                       >
                         {this.handleHighlight(item.entity_name, filter)}

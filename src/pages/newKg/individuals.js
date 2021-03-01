@@ -3,6 +3,7 @@ import { Spin } from 'antd'
 import * as echarts from 'echarts'
 import _ from 'lodash'
 import resizeListener, { unbind } from 'element-resize-event'
+import subList from '@/constants/subject'
 import { searchByKnowIdV3 } from '@/services/knowledge'
 
 export default class GraphChart extends React.Component {
@@ -75,7 +76,7 @@ export default class GraphChart extends React.Component {
     if (category === '0') {
       return
     }
-    window.open(`/knowledgeWiki/knowledge?name=${name.split(' (知识点)')[0]}&subject=${subject}`)
+    window.open(`/knowledgeWiki/knowledge?name=${name.split(' (知识点)')[0]}&subject=${_.find(subList, { value: subject }).cmcc}`)
   }
 
   renderChart = (dom, graph, forcename, instance, forceUpdate = false) => {
