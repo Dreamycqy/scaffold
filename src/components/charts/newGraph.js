@@ -66,11 +66,6 @@ export default class GraphChart extends React.Component {
     if (!graph.nodes || graph.nodes.length < 1) {
       options = {
         ...options,
-        title: {
-          // text: '暂无数据',
-          x: '56%',
-          y: 'center',
-        },
       }
     } else {
       const { nodes } = graph
