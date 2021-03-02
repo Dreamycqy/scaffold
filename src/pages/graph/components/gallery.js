@@ -35,7 +35,7 @@ class Gallery extends React.Component {
       result.push(
         <div>
           <a href="javascript:;" onClick={() => this.chooseImg(_.findIndex(imgList, { object: e.object }))}>
-            <img style={{ border: '1px solid #e8e8e8', margin: 20, objectFit: 'cover' }} src={e.object} alt="" height="220px" width="220px" />
+            <img style={{ border: '1px solid #e8e8e8', margin: 20, objectFit: 'cover' }} src={e.object.replace('kb.cs.tsinghua.edu.cn', '39.100.31.203:8080/res_lib')} alt="" height="220px" width="220px" />
           </a>
         </div>,
       )
@@ -64,7 +64,7 @@ class Gallery extends React.Component {
         >
           <div style={{ marginTop: 20 }}>
             <div style={{ textAlign: 'center', minHeight: 320 }}>
-              <img src={selectImg.src} alt="" style={{ maxHeight: 300 }} />
+              <img src={selectImg.src.replace('kb.cs.tsinghua.edu.cn', '39.100.31.203:8080/res_lib')} alt="" style={{ maxHeight: 300 }} />
             </div>
             <div style={{ marginTop: 30, textAlign: 'center' }}>
               <Button type="primary" style={{ marginRight: 20 }} disabled={selectImg.index === 0} onClick={() => this.chooseImg(selectImg.index - 1)}>前一张</Button>

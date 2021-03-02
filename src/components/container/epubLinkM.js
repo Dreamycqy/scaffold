@@ -45,12 +45,12 @@ export default class Epub extends React.Component {
         (e, index) => {
           if (index < 2) {
             result.push(
-              <span key={e} style={{ display: 'inline-block' }}>
+              <span key={e.title} style={{ display: 'inline-block' }}>
                 <a
                   href="javascript:;"
                   className={styles.aLink}
-                  onClick={() => this.epubimg(e)}
-                  dangerouslySetInnerHTML={{ __html: `${index + 1}.${e}` }} // eslint-disable-line
+                  onClick={() => {}}
+                  dangerouslySetInnerHTML={{ __html: `${index + 1}.${e.title}` }} // eslint-disable-line
                 />
                 <br />
               </span>,
@@ -73,7 +73,7 @@ export default class Epub extends React.Component {
         <h3>原文链接</h3>
         {this.renderList(list)}
         <div style={{ marginTop: 10, height: 16 }}>
-          <LinkModal list={list} />
+          <LinkModal imgList={list} />
         </div>
       </div>
     )
