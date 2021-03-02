@@ -49,7 +49,7 @@ export default class Epub extends React.Component {
                 <a
                   href="javascript:;"
                   className={styles.aLink}
-                  onClick={() => {}}
+                  onClick={() => { this.content.chooseImg(index) }}
                   dangerouslySetInnerHTML={{ __html: `${index + 1}.${e.title}` }} // eslint-disable-line
                 />
                 <br />
@@ -73,7 +73,7 @@ export default class Epub extends React.Component {
         <h3>原文链接</h3>
         {this.renderList(list)}
         <div style={{ marginTop: 10, height: 16 }}>
-          <LinkModal imgList={list} />
+          <LinkModal imgList={list} ref={(c) => this.content = c} />
         </div>
       </div>
     )

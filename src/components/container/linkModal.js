@@ -105,7 +105,7 @@ export default class EpubModal extends React.Component {
             </div>
           </div>
           <Slider
-            style={{ height: 180, border: '1px solid #e8e8e8', marginTop: 20 }}
+            style={{ height: 180, border: '1px solid #e8e8e8', margin: '20px 0' }}
             dots slidesPerRow={5}
             autoplay autoplaySpeed={3000}
           >
