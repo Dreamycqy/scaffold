@@ -34,6 +34,8 @@ class GraphTree extends React.Component {
         if (target) {
           this.onTreeSearch({ target: { value: target.name } }, nextProps.treeData)
           this.onSelect([id])
+        } else {
+          this.setState({ searchValue: '', selectKey: '' })
         }
       }
     }
