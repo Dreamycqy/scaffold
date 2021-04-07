@@ -254,7 +254,7 @@ class KgContent extends React.Component {
       pathname: '/knowledgeWiki/searchPage',
       query: {
         filter: value,
-        subject: targetSubject,
+        subject: _.find(subList, { value: targetSubject }).cmcc,
       },
     }))
   }
