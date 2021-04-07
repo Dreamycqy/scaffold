@@ -74,6 +74,7 @@ export default class SearchPage extends React.Component {
             href="javascript:;"
             onClick={() => this.setState({ show: !show })}
             style={{ color: '#b0b8b9' }}
+            disabled={!list || list.length === 0}
           >
             {show ? '<<收起结果' : `查看全部${list ? list.length : 0}个相关结果>>`}
           </a>

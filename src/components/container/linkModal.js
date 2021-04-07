@@ -20,13 +20,17 @@ export default class EpubModal extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps = (nextProps) => {
-    this.setState({
-      selectImg: {
-        src: nextProps.imgList[0].src,
-        index: 0,
-        title: nextProps.imgList[0].title,
-      },
-    })
+    if (nextProps.imgList[0]) {
+      if (nextProps.imgList[0].src) {
+        this.setState({
+          selectImg: {
+            src: nextProps.imgList[0].src,
+            index: 0,
+            title: nextProps.imgList[0].title,
+          },
+        })
+      }
+    }
   }
 
   chooseImg = (num) => {
@@ -65,6 +69,7 @@ export default class EpubModal extends React.Component {
           href="javascript:;"
           onClick={() => this.setState({ show: !show })}
           style={{ color: '#b0b8b9', float: 'right' }}
+          disabled={imgList.length === 0}
         >
           {`查看全部${imgList.length}个相关结果>>`}
         </a>
