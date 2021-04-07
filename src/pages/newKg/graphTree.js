@@ -30,8 +30,11 @@ class GraphTree extends React.Component {
       this.generateList(nextProps.treeData)
       const id = getUrlParams().kgId
       if (id) {
-        this.onTreeSearch({ target: { value: _.find(dataList, { key: id }).name } }, nextProps.treeData)
-        this.onSelect([id])
+        const target = _.find(dataList, { key: id })
+        if (target) {
+          this.onTreeSearch({ target: { value: target.name } }, nextProps.treeData)
+          this.onSelect([id])
+        }
       }
     }
     // if (nextProps.target !== '') {
