@@ -4,7 +4,7 @@ import { connect } from 'dva'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import en_GB from 'antd/lib/locale-provider/en_GB'
 import menuList from '@/constants/menuList'
-import backGroundImg from '@/assets/14624.jpg'
+import banner from '@/assets/banner.jpg'
 import NewHeader from './header'
 
 const {
@@ -41,7 +41,7 @@ class MainLayout extends React.Component {
       <Layout>
         <ConfigProvider locale={this.props.locale === 'cn' ? zh_CN : en_GB}>
           <NewHeader />
-          <Content style={{ background: `url(${backGroundImg}) top`, backgroundSize: '120%', minHeight: 800, marginTop: 40 }}>
+          <Content style={{ minHeight: 800, marginTop: 40, backgroundImage: `url(${banner})` }}>
             {this.props.children}
           </Content>
           <Footer
@@ -50,9 +50,12 @@ class MainLayout extends React.Component {
             <div style={{ padding: '0 30px' }}>
               <div style={{ textAlign: 'center', color: 'white' }}>
                 <div style={{ display: 'inline-block' }}>
-                  <div style={{ fontSize: 18 }}>Copyright© 2021 KEG</div>
+                  <div style={{ fontSize: 10 }}>Copyright© 2021 KEG</div>
                   <div style={{ fontSize: 10 }}>
                     清华大学知识工程研究室&nbsp;&nbsp;&nbsp;&nbsp;京ICP备19056327号-1
+                  </div>
+                  <div style={{ fontSize: 10 }}>
+                    互联网教育智能技术及应用国家工程实验室
                   </div>
                 </div>
               </div>

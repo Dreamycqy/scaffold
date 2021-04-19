@@ -28,10 +28,10 @@ export default {
       hardSource: false,
     }],
   ],
-  outputPath: './public/knowledgeWiki/',
-  publicPath: '/knowledgeWiki/',
+  outputPath: './public/scaffold/',
+  publicPath: '/scaffold/',
   proxy: {
-    '/knowledgeWiki/api/': { target: 'http://127.0.0.1:8848/', changeOrigin: true },
+    '/scaffold/api/': { target: 'http://127.0.0.1:8848/', changeOrigin: true },
   },
   define: defineProperty(),
   routes: pageRoutes,

@@ -8,7 +8,6 @@ class Hr extends React.Component {
           display: 'block',
           height: 3,
           width: `${this.props.width}%`,
-          left: `${(100 - this.props.width) / 2}%`,
           position: 'relative',
           padding: 0,
           border: 'none',

@@ -78,7 +78,7 @@ class Home extends React.Component {
 
   jumpUserInfo = () => {
     this.props.dispatch(routerRedux.push({
-      pathname: '/knowledgeWiki/userConfig',
+      pathname: '/scaffold/userConfig',
     }))
   }
 
@@ -106,9 +106,8 @@ class Home extends React.Component {
     return (
       <div
         style={{
-          height: 40,
+          height: 60,
           backgroundColor: '#001529',
-          borderBottom: '1px solid #e8e8e8',
           position: 'fixed',
           top: 0,
           zIndex: 999,
@@ -119,21 +118,41 @@ class Home extends React.Component {
         <div
           style={{
             width: 300,
-            height: 31,
+            height: 60,
             marginLeft: 30,
             float: 'left',
-            fontSize: 14,
+            fontSize: 20,
             fontWeight: 700,
-            lineHeight: '40px',
+            lineHeight: '60px',
           }}
         >
-          <Link to="/">Edukg 基础教育知识图谱</Link>
+          <Link to="/">基础教育知识图谱开放应用平台</Link>
         </div>
-        {/* {
+        <Menu
+          mode="horizontal"
+          style={{ lineHeight: '58px', position: 'absolute', right: 200, height: 30 }}
+        >
+          <Menu.Item style={{ height: 60, backgroundColor: '#001529', color: '#fff' }} key="1">
+            图谱概览
+          </Menu.Item>
+          <Menu.Item style={{ height: 60, backgroundColor: '#001529', color: '#fff' }} key="2">
+            平台功能
+          </Menu.Item>
+          <Menu.Item style={{ height: 60, backgroundColor: '#001529', color: '#fff' }} key="3">
+            应用案例
+          </Menu.Item>
+          <Menu.Item style={{ height: 60, backgroundColor: '#001529', color: '#fff' }} key="4">
+            帮助文档
+          </Menu.Item>
+          <Menu.Item style={{ height: 60, backgroundColor: '#001529', color: '#fff' }} key="5">
+            团队介绍
+          </Menu.Item>
+        </Menu>
+        {
           email
             ? (
               <Dropdown overlay={menu}>
-                <span style={{ float: 'right', lineHeight: '40px', marginRight: 20, color: 'white' }}>
+                <span style={{ float: 'right', lineHeight: '60px', marginRight: 20, color: 'white' }}>
                   {
                     userConfig.nickName === null ? email : userConfig.nickName
                   }
@@ -141,8 +160,8 @@ class Home extends React.Component {
                 </span>
               </Dropdown>
             )
-            : <a style={{ float: 'right', lineHeight: '40px', marginRight: 20, color: 'white' }} href="javascript:;" onClick={() => this.setState({ visible: true })}>请登录</a>
-        } */}
+            : <a style={{ float: 'right', lineHeight: '60px', marginRight: 20, color: 'white' }} href="javascript:;" onClick={() => this.setState({ visible: true })}>请登录</a>
+        }
         <Modal
           title="欢迎登陆教学平台"
           visible={visible}

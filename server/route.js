@@ -3,7 +3,7 @@ const proxy = require('./routes/proxy')
 
 const routesConfig = [
   {
-    path: ['/knowledgeWiki/api/*'],
+    path: ['/scaffold/api/*'],
     route: proxy,
   }, {
     path: '**',

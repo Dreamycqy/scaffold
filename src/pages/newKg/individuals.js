@@ -76,7 +76,7 @@ export default class GraphChart extends React.Component {
     if (category === '0') {
       return
     }
-    window.open(`/knowledgeWiki/knowledge?name=${name.split(' (知识点)')[0]}&subject=${_.find(subList, { value: subject }).cmcc}`)
+    window.open(`/scaffold/knowledge?name=${name.split(' (知识点)')[0]}&subject=${_.find(subList, { value: subject }).cmcc}`)
   }
 
   renderChart = (dom, graph, forcename, instance, forceUpdate = false) => {

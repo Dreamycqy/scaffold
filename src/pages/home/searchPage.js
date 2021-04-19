@@ -105,7 +105,7 @@ class ClusterBroker extends React.Component {
 
   handleJumpGraph = () => {
     this.props.dispatch(routerRedux.push({
-      pathname: '/knowledgeWiki/kgPage',
+      pathname: '/scaffold/kgPage',
       query: {
         // subject: 'chinese',
         // grade: '高中',
@@ -218,7 +218,7 @@ class ClusterBroker extends React.Component {
                       <a
                         href="javascript:;"
                         onClick={() => {
-                          window.open(`/knowledgeWiki/knowledge?name=${escape(item.entity_name)}&type=instance&subject=${_.find(subList, { value: subject }).cmcc}`)
+                          window.open(`/scaffold/knowledge?name=${escape(item.entity_name)}&type=instance&subject=${_.find(subList, { value: subject }).cmcc}`)
                         }}
                       >
                         {this.handleHighlight(item.entity_name, filter)}

@@ -1,12 +1,16 @@
 export default [
   {
     path: '/',
-    redirect: '/knowledgeWiki/searchPage',
+    redirect: '/scaffold/homePage',
   },
   {
-    path: '/knowledgeWiki',
+    path: '/scaffold',
     component: '../layouts',
     routes: [
+      {
+        path: './homePage',
+        component: './base/index',
+      },
       {
         path: './searchPage',
         component: './home/searchPage',

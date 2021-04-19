@@ -251,7 +251,7 @@ class KgContent extends React.Component {
   jumpSearch = (value) => {
     const { targetSubject } = this.state
     this.props.dispatch(routerRedux.push({
-      pathname: '/knowledgeWiki/searchPage',
+      pathname: '/scaffold/searchPage',
       query: {
         filter: value,
         subject: _.find(subList, { value: targetSubject }).cmcc,

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchUserInfo(data) {
   return request.get({
-    url: '/knowledgeWiki/api/typeAuth/user/getUserInfo',
+    url: '/scaffold/api/typeAuth/user/getUserInfo',
     data,
     showError: false,
   })
@@ -10,7 +10,7 @@ export function fetchUserInfo(data) {
 
 export function logout(data) {
   return request.post({
-    url: '/knowledgeWiki/api/typeAuth/user/logout',
+    url: '/scaffold/api/typeAuth/user/logout',
     data,
     failed: () => { return null },
   })
@@ -18,21 +18,21 @@ export function logout(data) {
 
 export function login(data) {
   return request.post({
-    url: '/knowledgeWiki/api/typeAuth/user/login',
+    url: '/scaffold/api/typeAuth/user/login',
     data,
   })
 }
 
 export function register(data) {
   return request.post({
-    url: '/knowledgeWiki/api/typeAuth/user/register',
+    url: '/scaffold/api/typeAuth/user/register',
     data,
   })
 }
 
 export function getUserList(body, rSymbol) {
   return request.get({
-    url: '/knowledgeWiki/api/typeAuth/method/getUserInfo',
+    url: '/scaffold/api/typeAuth/method/getUserInfo',
     data: body,
     rSymbol,
   })
